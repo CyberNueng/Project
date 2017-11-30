@@ -9,18 +9,24 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.TranslateAnimation;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-public class MainActivity2 extends AppCompatActivity implements SensorEventListener {
+public class MainActivity2 extends Activity implements SensorEventListener {
     SensorManager sensorManager;
     Handler hdr = new Handler();
     float acc_x, acc_y, acc_z;
     int POLL_INTERVAL = 500;
-    int shake_threshold = 30;
+    int shake_start = 30;
+    int shake_take = 10;
     BroadcastReceiver batteryInfoReceiver;
+    ImageView img1, img2, img3, img4, img5, img6;
+    TranslateAnimation ta1, ta2, ta3, ta4, ta5, ta6;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +38,12 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
         sensorManager.registerListener((SensorEventListener) this,
                 sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_NORMAL);
+        img1 = (ImageView)findViewById(R.id.img1);
+        ta1 = new TranslateAnimation(0, 100, 0, 500);
+        ta1.setDuration(1000);
+        ta1.setFillAfter(true);
+        img1.setAnimation(ta1);
+        ta1.start();
     }
 
     public void onSensorChanged(SensorEvent event){

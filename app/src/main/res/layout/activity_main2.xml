@@ -5,7 +5,49 @@
     android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     tools:context="cs355.project.MainActivity2">
+
+    <ImageView
+        android:id="@+id/img1"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:contentDescription="@string/img1"
+        android:src="@drawable/fatty" />
+
+    <ImageView
+        android:id="@+id/img2"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:contentDescription="@string/img2"
+        android:src="@drawable/dok" />
+
+    <ImageView
+        android:id="@+id/img3"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:contentDescription="@string/img3"
+        android:src="@drawable/nong" />
+
+    <ImageView
+        android:id="@+id/img4"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:contentDescription="@string/img4"
+        android:src="@drawable/pikachu" />
+
+    <ImageView
+        android:id="@+id/img5"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:contentDescription="@string/img5"
+        android:src="@drawable/pink" />
+
+    <ImageView
+        android:id="@+id/img6"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:contentDescription="@string/img6"
+        android:src="@drawable/som" />
 
 </LinearLayout>
