@@ -5,8 +5,8 @@
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
     android:background="@drawable/bg"
+    android:orientation="vertical"
     tools:context="cs355.project.MainActivity">
     //android:id="@+id/background"
 
@@ -19,34 +19,42 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"></LinearLayout>
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="50dp"
+        android:layout_height="290dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="10dp"
         android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/button1"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="54dp"
             android:layout_weight="1"
-            android:background="@drawable/sound" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:layout_weight="1"
-            android:background="@drawable/music" />
+            android:orientation="horizontal"></LinearLayout>
 
         <Button
             android:id="@+id/button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="400dp"
+            android:layout_height="75dp"
             android:layout_weight="1"
             android:background="@drawable/play"
             tools:ignore="DuplicateIds" />
