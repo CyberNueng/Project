@@ -15,10 +15,12 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.TranslateAnimation;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 public class MainActivity2 extends Activity implements SensorEventListener {
     SensorManager sensorManager;
@@ -29,27 +31,24 @@ public class MainActivity2 extends Activity implements SensorEventListener {
     int shake_take = 10;
     int pause_shake = 5;
     BroadcastReceiver batteryInfoReceiver;
-    ImageView img1, img2, img3, img4, img5, img6;
-    TranslateAnimation ta1, ta2, ta3, ta4, ta5, ta6;
+    ArrayList<ImageView> list = new ArrayList<ImageView>();
+    TranslateAnimation ta, ta1, ta2, ta3, ta4, ta5, ta6;
     int state = 0; //0 for throw state, 1 for up state, 2foe fall state
     int stage = 1; //number of pokemon troll
+    int floor = 1450;
+    int deadline = 1300;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main2);
-        LinearLayout layout =(LinearLayout)findViewById(R.id.background);
+        FrameLayout layout =(FrameLayout)findViewById(R.id.background);
         layout.setBackgroundResource(R.drawable.background);
         sensorManager=(SensorManager)getSystemService(SENSOR_SERVICE);
         sensorManager.registerListener((SensorEventListener) this,
                 sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_NORMAL);
-        img1 = (ImageView)findViewById(R.id.img1);
-        ta1 = new TranslateAnimation(0, 100, 0, 1000);
-        ta1.setDuration(1000);
-        ta1.setFillAfter(true);
-        img1.setAnimation(ta1);
-        ta1.start();
+        setPoke();
     }
 
     public void onSensorChanged(SensorEvent event){
@@ -109,11 +108,12 @@ public class MainActivity2 extends Activity implements SensorEventListener {
     }
 
     public void throwPoke(){
-
+        if(stage==1){
+            
+        }
     }
 
     public void setPoke(){
-        ArrayList<ImageView> list = new ArrayList<ImageView>();
         list.add((ImageView)findViewById(R.id.img1));
         list.add((ImageView)findViewById(R.id.img2));
         list.add((ImageView)findViewById(R.id.img3));
@@ -122,5 +122,17 @@ public class MainActivity2 extends Activity implements SensorEventListener {
         list.add((ImageView)findViewById(R.id.img6));
         Collections.shuffle(list);
         list.remove(0).setVisibility(View.GONE);
+        for(int i = 0; i<5; i++) {
+            Random r = new Random();
+            int rand_x = r.nextInt(800);
+            int rand_y = r.nextInt(500);
+            int rand_x2 = r.nextInt(800);
+            ta = new TranslateAnimation(rand_x, rand_x2, rand_y, floor);
+            int rand_drop = r.nextInt(400)+800;
+            ta.setDuration(rand_drop);
+            ta.setFillAfter(true);
+            list.get(i).setAnimation(ta);
+            ta.start();
+        }
     }
 }
