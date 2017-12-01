@@ -131,13 +131,15 @@ public class MainActivity2 extends Activity implements SensorEventListener {
         else if(state==1&&!pause)
         {
             fallPoke();
-            state=2;
+            int[] loca = new int[2];
+            list.get(0).getLocationOnScreen(loca);
+            if(loca[1]==floor&&canTake>0){
+                Intent intent = new Intent(MainActivity.this,
+                        MainActivity2.class);
+                startActivity(intent);
+            }
         }
-        else if(!pause)
-        {
-
-        }
-        if(stage==4&&list.size()==0){
+        if(stage==4&&canTake==0){
 
         }
     }
