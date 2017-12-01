@@ -18,7 +18,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.TranslateAnimation;
 import android.view.animation.Animation;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import java.util.ArrayList;
@@ -45,6 +47,7 @@ public class MainActivity2 extends Activity implements SensorEventListener {
     int x[] = new int[5];
     int y[] = new int[5];
     boolean pause = false;
+    LinearLayout pauseLayout,leftLayout,rightLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,13 +56,18 @@ public class MainActivity2 extends Activity implements SensorEventListener {
         setContentView(R.layout.activity_main2);
         FrameLayout layout =(FrameLayout)findViewById(R.id.background);
         layout.setBackgroundResource(R.drawable.background);
-        LinearLayout pauseLayout = (LinearLayout)findViewById(R.id.pause);
+        pauseLayout = (LinearLayout)findViewById(R.id.pause);
+        leftLayout = (LinearLayout)findViewById(R.id.left);
+        rightLayout = (LinearLayout)findViewById(R.id.right);
         pauseLayout.setVisibility(LinearLayout.INVISIBLE);
+        leftLayout.setVisibility(LinearLayout.INVISIBLE);
+        rightLayout.setVisibility(LinearLayout.INVISIBLE);
         v = (Vibrator)this.getSystemService(Context.VIBRATOR_SERVICE);
         sensorManager=(SensorManager)getSystemService(SENSOR_SERVICE);
         sensorManager.registerListener((SensorEventListener) this,
                 sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_NORMAL);
+        createBtn();
         setPoke();
     }
 
@@ -171,10 +179,24 @@ public class MainActivity2 extends Activity implements SensorEventListener {
     }
 
     public void pause(){
-
+        pause = true;
+        pauseLayout.setVisibility(LinearLayout.VISIBLE);
     }
 
     public void unpuase(){
 
+    }
+
+    public void restart(){
+
+    }
+
+    public void createBtn(){
+        ImageButton btnPuase = (ImageButton)findViewById(R.id.puaseBtn);
+        btnPuase.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                pause();
+            }
+        });
     }
 }
