@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         //LinearLayout layout =(LinearLayout)findViewById(R.id.background);
         //layout.setBackgroundResource(R.drawable.background);
 
-        MediaPlayer song = MediaPlayer.create(MainActivity.this, R.raw.mon);
+        MediaPlayer song = MediaPlayer.create(MainActivity.this, R.raw.bgsong);
         song.setLooping(true);
         song.start();
 
