@@ -22,11 +22,14 @@ public class MainActivity2 extends Activity implements SensorEventListener {
     Handler hdr = new Handler();
     float acc_x, acc_y, acc_z;
     int POLL_INTERVAL = 500;
-    int shake_start = 30;
+    int shake_throw = 20;
     int shake_take = 10;
+    int pause_shake = 5;
     BroadcastReceiver batteryInfoReceiver;
     ImageView img1, img2, img3, img4, img5, img6;
     TranslateAnimation ta1, ta2, ta3, ta4, ta5, ta6;
+    int state = 0; //0 for throw state, 1 for up state, 2foe fall state
+    int stage = 1; //number of pokemon troll
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +42,7 @@ public class MainActivity2 extends Activity implements SensorEventListener {
                 sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_NORMAL);
         img1 = (ImageView)findViewById(R.id.img1);
-        ta1 = new TranslateAnimation(0, 100, 0, 500);
+        ta1 = new TranslateAnimation(0, 100, 0, 1000);
         ta1.setDuration(1000);
         ta1.setFillAfter(true);
         img1.setAnimation(ta1);
@@ -84,5 +87,9 @@ public class MainActivity2 extends Activity implements SensorEventListener {
         super.onPause();
         sensorManager.unregisterListener(this);
         hdr.removeCallbacks(pollTask);
+    }
+
+    public void play(){
+
     }
 }
