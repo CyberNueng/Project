@@ -8,6 +8,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
@@ -42,12 +43,14 @@ public class MainActivity2 extends Activity implements SensorEventListener {
     int state = 0; //0 for throw state, 1 for up state, 2foe fall state
     int stage = 1; //number of pokemon troll
     int floor = 1450;
-    int deadline = 1300;
+    boolean candead = false;
     Vibrator v;
     int x[] = new int[5];
     int y[] = new int[5];
     boolean pause = false;
+    int L_R = 0; //0=left 1=right
     LinearLayout pauseLayout,leftLayout,rightLayout;
+    ImageButton pBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +62,7 @@ public class MainActivity2 extends Activity implements SensorEventListener {
         pauseLayout = (LinearLayout)findViewById(R.id.pause);
         leftLayout = (LinearLayout)findViewById(R.id.left);
         rightLayout = (LinearLayout)findViewById(R.id.right);
+        pBtn = (ImageButton)findViewById(R.id.puaseBtn);
         pauseLayout.setVisibility(LinearLayout.INVISIBLE);
         leftLayout.setVisibility(LinearLayout.INVISIBLE);
         rightLayout.setVisibility(LinearLayout.INVISIBLE);
@@ -67,6 +71,9 @@ public class MainActivity2 extends Activity implements SensorEventListener {
         sensorManager.registerListener((SensorEventListener) this,
                 sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_NORMAL);
+        MediaPlayer song = MediaPlayer.create(MainActivity2.this, R.raw.bgsong);
+        song.setLooping(true);
+        song.start();
         createBtn();
         setPoke();
     }
@@ -123,7 +130,8 @@ public class MainActivity2 extends Activity implements SensorEventListener {
         }
         else if(state==1&&!pause)
         {
-
+            fallPoke();
+            state=2;
         }
         else if(!pause)
         {
@@ -140,6 +148,7 @@ public class MainActivity2 extends Activity implements SensorEventListener {
         int rand_y2 = r.nextInt(200)-400;
         ta = new TranslateAnimation(x[0], rand_x2, floor, rand_y2);
         int rand_speed = r.nextInt(200)+400;
+        L_R = r.nextInt();
         ta.setDuration(rand_speed);
         ta.setFillAfter(true);
         list.get(0).startAnimation(ta);
@@ -152,6 +161,18 @@ public class MainActivity2 extends Activity implements SensorEventListener {
             case 3: canTake=3;
             case 4: canTake=4;
         }
+    }
+
+    public void fallPoke(){
+        Random r = new Random();
+        int rand_x2 = r.nextInt(800);
+        ta = new TranslateAnimation(x[0], rand_x2, y[0], floor);
+        int rand_speed = r.nextInt(200)+400;
+        ta.setDuration(rand_speed);
+        ta.setFillAfter(true);
+        list.get(0).startAnimation(ta);
+        x[0] = rand_x2;
+        y[0] = floor;
     }
 
     public void setPoke(){
@@ -181,14 +202,18 @@ public class MainActivity2 extends Activity implements SensorEventListener {
     public void pause(){
         pause = true;
         pauseLayout.setVisibility(LinearLayout.VISIBLE);
+        pBtn.setVisibility(ImageButton.INVISIBLE);
     }
 
     public void unpuase(){
-
+        pause = false;
+        pauseLayout.setVisibility(LinearLayout.INVISIBLE);
+        pBtn.setVisibility(ImageButton.VISIBLE);
     }
 
     public void restart(){
-
+        finish();
+        startActivity(getIntent());
     }
 
     public void createBtn(){
@@ -196,6 +221,18 @@ public class MainActivity2 extends Activity implements SensorEventListener {
         btnPuase.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 pause();
+            }
+        });
+        ImageButton btnPlay = (ImageButton)findViewById(R.id.play);
+        btnPlay.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                unpuase();
+            }
+        });
+        ImageButton btnRestart= (ImageButton)findViewById(R.id.restart);
+        btnRestart.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                restart();
             }
         });
     }
