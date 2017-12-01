@@ -11,11 +11,14 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class MainActivity2 extends Activity implements SensorEventListener {
     SensorManager sensorManager;
@@ -65,6 +68,7 @@ public class MainActivity2 extends Activity implements SensorEventListener {
 
     private Runnable pollTask = new Runnable() {
         public void run() {
+            play();
             hdr.postDelayed(pollTask,POLL_INTERVAL);
         }
     };
@@ -90,6 +94,33 @@ public class MainActivity2 extends Activity implements SensorEventListener {
     }
 
     public void play(){
+        if(state==0)
+        {
 
+        }
+        else if(state==1)
+        {
+
+        }
+        else
+        {
+
+        }
+    }
+
+    public void throwPoke(){
+
+    }
+
+    public void setPoke(){
+        ArrayList<ImageView> list = new ArrayList<ImageView>();
+        list.add((ImageView)findViewById(R.id.img1));
+        list.add((ImageView)findViewById(R.id.img2));
+        list.add((ImageView)findViewById(R.id.img3));
+        list.add((ImageView)findViewById(R.id.img4));
+        list.add((ImageView)findViewById(R.id.img5));
+        list.add((ImageView)findViewById(R.id.img6));
+        Collections.shuffle(list);
+        list.remove(0).setVisibility(View.GONE);
     }
 }
