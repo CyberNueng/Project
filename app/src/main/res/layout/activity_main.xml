@@ -79,7 +79,7 @@
             android:layout_width="400dp"
             android:layout_height="65dp"
             android:layout_weight="1"
-            android:background="@drawable/play"
+            android:background="@drawable/start"
             tools:ignore="DuplicateIds" />
     </LinearLayout>
 
