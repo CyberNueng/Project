@@ -155,7 +155,6 @@ public class MainActivity2 extends Activity implements SensorEventListener {
         list.add((ImageView)findViewById(R.id.img6));
         Collections.shuffle(list);
         list.remove(0).setVisibility(View.GONE);
-        setBtn();
         for(int i = 0; i<5; i++) {
             Random r = new Random();
             x[i] = r.nextInt(800);
@@ -177,54 +176,5 @@ public class MainActivity2 extends Activity implements SensorEventListener {
 
     public void unpuase(){
 
-    }
-
-    public void setBtn(){
-        list.get(0).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(canTake>0) {
-                    canTake--;
-                    v.setVisibility(View.GONE);
-                }
-            }
-        });
-        list.get(1).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(canTake>0) {
-                    canTake--;
-                    v.setVisibility(View.GONE);
-                }
-            }
-        });
-        list.get(2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(canTake>0) {
-                    canTake--;
-                    v.setVisibility(View.GONE);
-                }
-            }
-        });
-        list.get(3).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(canTake>0) {
-                    canTake--;
-                    v.setVisibility(View.GONE);
-                }
-            }
-        });
-        list.get(4).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(canTake>0) {
-                    canTake--;
-                    v.setVisibility(View.GONE);
-                }
-            }
-        });
     }
 }
