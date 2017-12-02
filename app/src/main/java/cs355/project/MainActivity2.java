@@ -52,7 +52,7 @@ public class MainActivity2 extends Activity implements SensorEventListener {
     int x[] = new int[5];
     int y[] = new int[5];
     boolean pause = false;
-    int L_R = 0; //0=left 1=right
+    int L_R = 0; //0=left 1=right 2=not check
     LinearLayout pauseLayout,leftLayout,rightLayout;
     ImageButton pBtn;
 
@@ -103,7 +103,7 @@ public class MainActivity2 extends Activity implements SensorEventListener {
             if (success) {
                 float orientation[] = new float[3];
                 SensorManager.getOrientation(R, orientation);
-                orien_y = orientation[1]; // orientation contains: azimut, pitch and roll
+                orien_y = orientation[2]; // orientation contains: azimut, pitch and roll
             }
         }
     }
@@ -154,6 +154,15 @@ public class MainActivity2 extends Activity implements SensorEventListener {
         }
         else if(state==1&&!pause)
         {
+            if((orien_y<(-20))&&L_R==0){
+                leftLayout.setVisibility(LinearLayout.INVISIBLE);
+                canTake--;
+                L_R=2;
+            } else if((orien_y<(20))&&L_R==1){
+                rightLayout.setVisibility(LinearLayout.INVISIBLE);
+                canTake--;
+                L_R=2;
+            }
             fallPoke();
             int[] loca = new int[2];
             list.get(0).getLocationOnScreen(loca);
@@ -174,16 +183,16 @@ public class MainActivity2 extends Activity implements SensorEventListener {
         int rand_x2 = r.nextInt(800);
         int rand_y2 = r.nextInt(200)-400;
         ta = new TranslateAnimation(x[0], rand_x2, floor, rand_y2);
-        int rand_speed = r.nextInt(200)+400;
-        L_R = r.nextInt();
+        int rand_speed = r.nextInt(200)+800;
+        L_R = r.nextInt(1);
         ta.setDuration(rand_speed);
         ta.setFillAfter(true);
-        list.get(0).startAnimation(ta);
-        x[0] = rand_x2;
-        y[0] = rand_y2;
         MediaPlayer song = MediaPlayer.create(MainActivity2.this, R.raw.through);
         song.setLooping(false);
         song.start();
+        list.get(0).startAnimation(ta);
+        x[0] = rand_x2;
+        y[0] = rand_y2;
         switch(stage){
             case 1: canTake=1;
             case 2: canTake=2;
@@ -196,7 +205,7 @@ public class MainActivity2 extends Activity implements SensorEventListener {
         Random r = new Random();
         int rand_x2 = r.nextInt(800);
         ta = new TranslateAnimation(x[0], rand_x2, y[0], floor);
-        int rand_speed = r.nextInt(200)+400;
+        int rand_speed = r.nextInt(200)+800;
         ta.setDuration(rand_speed);
         ta.setFillAfter(true);
         list.get(0).startAnimation(ta);
