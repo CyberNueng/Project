@@ -238,7 +238,7 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
     }
 
     public void setPoke(){
-        list = new ArrayList<ImageView>();
+        list = new ArrayList<>();
         list.add((ImageView)findViewById(R.id.img1));
         list.add((ImageView)findViewById(R.id.img2));
         list.add((ImageView)findViewById(R.id.img3));
