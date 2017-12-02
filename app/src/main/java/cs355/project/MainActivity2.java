@@ -80,7 +80,6 @@ public class MainActivity2 extends Activity implements SensorEventListener {
         song.start();
         createBtn();
         setPoke();
-        text = (TextView)findViewById(R.id.textView);
     }
 
     public void onSensorChanged(SensorEvent event){
