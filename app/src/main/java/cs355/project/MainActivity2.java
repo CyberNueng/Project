@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Matrix;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -16,13 +15,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.Transformation;
 import android.view.animation.TranslateAnimation;
 import android.view.animation.Animation;
-import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -56,8 +51,7 @@ public class MainActivity2 extends Activity implements SensorEventListener {
     LinearLayout pauseLayout,leftLayout,rightLayout;
     ImageButton pBtn;
     boolean fall = false;
-    TextView text;
-    Random r;
+    Random r = new Random();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,7 +116,6 @@ public class MainActivity2 extends Activity implements SensorEventListener {
     }
 
     public void play(){
-        text.setText("ต้องหยิบอีก: "+String.valueOf(canTake));
         if(state==0&&!pause)
         {
             if(stage==5){
@@ -159,7 +152,6 @@ public class MainActivity2 extends Activity implements SensorEventListener {
             }
 
             if((acc_x<(5))&&(acc_y>(-5))&&L_R==2&&canTake>0&&list.size()>=2){
-                r = new Random();
                 L_R = r.nextInt(2);
             }
 
@@ -185,7 +177,6 @@ public class MainActivity2 extends Activity implements SensorEventListener {
     }
 
     public void throwPoke(){
-        r = new Random();
         int rand_x2 = r.nextInt(800);
         int rand_y2 = r.nextInt(200)-400;
         ta2 = new TranslateAnimation(x[0], rand_x2, floor, rand_y2);
@@ -226,7 +217,6 @@ public class MainActivity2 extends Activity implements SensorEventListener {
     }
 
     public void fallPoke(){
-        r = new Random();
         int rand_x2 = r.nextInt(800);
         ta1 = new TranslateAnimation(x[0], rand_x2, y[0], floor);
         int speed = 1500;
