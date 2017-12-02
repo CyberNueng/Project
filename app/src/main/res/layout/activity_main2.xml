@@ -56,7 +56,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:src="@drawable/left" />
+                    app:srcCompat="@drawable/left" />
             </LinearLayout>
 
             <LinearLayout
@@ -70,14 +70,14 @@
                     android:id="@+id/play"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/play" />
+                    app:srcCompat="@drawable/play" />
 
                 <ImageButton
                     android:id="@+id/restart"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:src="@drawable/again" />
+                    app:srcCompat="@drawable/again" />
             </LinearLayout>
 
             <LinearLayout
@@ -92,7 +92,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:src="@drawable/right" />
+                    app:srcCompat="@drawable/right" />
             </LinearLayout>
 
         </LinearLayout>
@@ -106,7 +106,7 @@
         android:layout_marginBottom="559dp"
         android:layout_marginEnd="311dp"
         android:contentDescription="@string/img1"
-        android:src="@drawable/fatty"
+        app:srcCompat="@drawable/fatty"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -121,7 +121,7 @@
         android:layout_marginBottom="559dp"
         android:layout_marginEnd="311dp"
         android:contentDescription="@string/img2"
-        android:src="@drawable/dok"
+        app:srcCompat="@drawable/dok"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -134,7 +134,7 @@
         android:layout_marginBottom="559dp"
         android:layout_marginEnd="311dp"
         android:contentDescription="@string/img3"
-        android:src="@drawable/nong"
+        app:srcCompat="@drawable/nong"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -147,7 +147,7 @@
         android:layout_marginBottom="559dp"
         android:layout_marginEnd="311dp"
         android:contentDescription="@string/img4"
-        android:src="@drawable/pikachu"
+        app:srcCompat="@drawable/pikachu"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -160,7 +160,7 @@
         android:layout_marginBottom="559dp"
         android:layout_marginEnd="311dp"
         android:contentDescription="@string/img5"
-        android:src="@drawable/pink"
+        app:srcCompat="@drawable/pink"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -173,7 +173,7 @@
         android:layout_marginBottom="559dp"
         android:layout_marginEnd="311dp"
         android:contentDescription="@string/img6"
-        android:src="@drawable/som"
+        app:srcCompat="@drawable/som"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

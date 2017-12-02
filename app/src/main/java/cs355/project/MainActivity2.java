@@ -11,8 +11,8 @@ import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Vibrator;
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.TranslateAnimation;
@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-public class MainActivity2 extends Activity implements SensorEventListener {
+public class MainActivity2 extends AppCompatActivity implements SensorEventListener {
     SensorManager sensorManager;
     Handler hdr = new Handler();
     float acc_x, acc_y, acc_z, loca;
@@ -36,7 +36,7 @@ public class MainActivity2 extends Activity implements SensorEventListener {
     ArrayList<ImageView> list;
     TranslateAnimation ta, ta1, ta2;
     int state = 0; //0 for throw state, 1 for up state, 2foe fall state
-    int stage = 1; //number of pokemon troll
+    int stage = 2; //number of pokemon troll
     int floor = 1450;
     Vibrator v;
     int x[] = new int[5];
@@ -46,6 +46,7 @@ public class MainActivity2 extends Activity implements SensorEventListener {
     LinearLayout pauseLayout,leftLayout,rightLayout;
     ImageButton pBtn;
     boolean fall = false;
+    boolean canthrow = true;
     Random r = new Random();
     MediaPlayer songThrow, song, songtake;
 
@@ -67,10 +68,8 @@ public class MainActivity2 extends Activity implements SensorEventListener {
                 sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_NORMAL);
         song = MediaPlayer.create(MainActivity2.this, R.raw.bgsong);
-        songtake = MediaPlayer.create(MainActivity2.this, R.raw.sucess);
         songThrow = MediaPlayer.create(MainActivity2.this, R.raw.through);
         song.setLooping(true);
-        songtake.setLooping(false);
         songThrow.setLooping(false);
         song.start();
         createBtn();
@@ -123,7 +122,7 @@ public class MainActivity2 extends Activity implements SensorEventListener {
                         MainActivity4.class);
                 startActivity(intent);
             }
-            if( (Math.abs(acc_x)>shake_throw) || (Math.abs(acc_y)>shake_throw) || (Math.abs(acc_z)>shake_throw) ) {
+            if( (Math.abs(acc_x)>shake_throw) || (Math.abs(acc_y)>shake_throw) || (Math.abs(acc_z)>shake_throw) && canthrow) {
                 v.vibrate(500);
                 throwPoke();
                 state=1;
@@ -131,8 +130,16 @@ public class MainActivity2 extends Activity implements SensorEventListener {
         }
         else if(state==1&&!pause)
         {
+            if(canTake==0&&list.size()==1){
+                state=0;
+                stage++;
+                setPoke();
+            }
+
             if((acc_x>(5))&&L_R==0){
                 leftLayout.setVisibility(LinearLayout.INVISIBLE);
+                songtake = MediaPlayer.create(MainActivity2.this, R.raw.sucess);
+                songtake.setLooping(false);
                 songtake.start();
                 list.get(1).clearAnimation();
                 list.remove(1).setVisibility(View.GONE);
@@ -147,28 +154,21 @@ public class MainActivity2 extends Activity implements SensorEventListener {
                 L_R=2;
             }
 
-            if((acc_x<(5))&&(acc_y>(-5))&&L_R==2&&canTake>0&&list.size()>=2){
+            if((acc_x<(5))&&(acc_x>(-5))&&L_R==2&&canTake>0&&list.size()>=2){
                 L_R = r.nextInt(2);
+                if(canTake>0) {
+                    if (L_R == 0) leftLayout.setVisibility(LinearLayout.VISIBLE);
+                    else if (L_R == 1) rightLayout.setVisibility(LinearLayout.VISIBLE);
+                }
             }
-
-            if(canTake>0) {
-                if (L_R == 0) leftLayout.setVisibility(LinearLayout.VISIBLE);
-                else if (L_R == 1) rightLayout.setVisibility(LinearLayout.VISIBLE);
-            }
-
-            if(canTake==0&&list.size()==1){
+            if(loca==floor&&canTake==0){
                 state=0;
-                stage++;
-                setPoke();
-            }
-            if(loca==floor&&canTake>0){
+            }else if(loca==floor&&canTake>0){
                 Intent intent = new Intent(MainActivity2.this,
                         MainActivity3.class);
                 startActivity(intent);
             }
-            if(loca==floor&&canTake==0){
-                state=0;
-            }
+
         }
     }
 
@@ -181,6 +181,7 @@ public class MainActivity2 extends Activity implements SensorEventListener {
         ta2.setDuration(speed);
         ta2.setFillAfter(true);
         fall = true;
+        canthrow =false;
         ta2.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {}
@@ -223,6 +224,7 @@ public class MainActivity2 extends Activity implements SensorEventListener {
             @Override
             public void onAnimationEnd(Animation animation) {
                 loca = 1450;
+                canthrow = true;
             }
 
             @Override
