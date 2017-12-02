@@ -11,7 +11,6 @@ import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Vibrator;
-import android.support.v7.app.AppCompatActivity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -21,7 +20,6 @@ import android.view.animation.Animation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,8 +27,6 @@ import java.util.Random;
 
 public class MainActivity2 extends Activity implements SensorEventListener {
     SensorManager sensorManager;
-    Sensor accelerometer;
-    Sensor magnetometer;
     Handler hdr = new Handler();
     float acc_x, acc_y, acc_z, loca;
     int POLL_INTERVAL = 250;
@@ -45,13 +41,13 @@ public class MainActivity2 extends Activity implements SensorEventListener {
     Vibrator v;
     int x[] = new int[5];
     int y[] = new int[5];
-    //int loca[] = new int[2];
     boolean pause = false;
     int L_R = 0; //0=left 1=right 2=not check
     LinearLayout pauseLayout,leftLayout,rightLayout;
     ImageButton pBtn;
     boolean fall = false;
     Random r = new Random();
+    MediaPlayer songThrow, song, songtake;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +66,12 @@ public class MainActivity2 extends Activity implements SensorEventListener {
         sensorManager.registerListener((SensorEventListener) this,
                 sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_NORMAL);
-        MediaPlayer song = MediaPlayer.create(MainActivity2.this, R.raw.bgsong);
+        song = MediaPlayer.create(MainActivity2.this, R.raw.bgsong);
+        songtake = MediaPlayer.create(MainActivity2.this, R.raw.sucess);
+        songThrow = MediaPlayer.create(MainActivity2.this, R.raw.through);
         song.setLooping(true);
+        songtake.setLooping(false);
+        songThrow.setLooping(false);
         song.start();
         createBtn();
         setPoke();
@@ -133,18 +133,14 @@ public class MainActivity2 extends Activity implements SensorEventListener {
         {
             if((acc_x>(5))&&L_R==0){
                 leftLayout.setVisibility(LinearLayout.INVISIBLE);
-                MediaPlayer song = MediaPlayer.create(MainActivity2.this, R.raw.sucess);
-                song.setLooping(false);
-                song.start();
+                songtake.start();
                 list.get(1).clearAnimation();
                 list.remove(1).setVisibility(View.GONE);
                 canTake--;
                 L_R=2;
             } else if((acc_x<(-5))&&L_R==1){
                 rightLayout.setVisibility(LinearLayout.INVISIBLE);
-                MediaPlayer song = MediaPlayer.create(MainActivity2.this, R.raw.sucess);
-                song.setLooping(false);
-                song.start();
+                songtake.start();
                 list.get(1).clearAnimation();
                 list.remove(1).setVisibility(View.GONE);
                 canTake--;
@@ -200,9 +196,7 @@ public class MainActivity2 extends Activity implements SensorEventListener {
             @Override
             public void onAnimationRepeat(Animation animation) {}
         });
-        MediaPlayer song = MediaPlayer.create(MainActivity2.this, R.raw.through);
-        song.setLooping(false);
-        song.start();
+        songThrow.start();
         list.get(0).startAnimation(ta2);
         x[0] = rand_x2;
         y[0] = rand_y2;
