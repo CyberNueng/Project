@@ -29,9 +29,13 @@ import java.util.Collections;
 import java.util.Random;
 
 public class MainActivity2 extends Activity implements SensorEventListener {
-    SensorManager sensorManager;
+    SensorManager sensorManager, sensorManager2;
+    Sensor accelerometer;
+    Sensor magnetometer;
     Handler hdr = new Handler();
-    float acc_x, acc_y, acc_z;
+    float acc_x, acc_y, acc_z, orien_y;
+    float[] mGravity;
+    float[] mGeomagnetic;
     int POLL_INTERVAL = 500;
     int shake_throw = 15;
     int shake_take = 10;
@@ -57,8 +61,6 @@ public class MainActivity2 extends Activity implements SensorEventListener {
         super.onCreate(savedInstanceState);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main2);
-        FrameLayout layout =(FrameLayout)findViewById(R.id.background);
-        layout.setBackgroundResource(R.drawable.background);
         pauseLayout = (LinearLayout)findViewById(R.id.pause);
         leftLayout = (LinearLayout)findViewById(R.id.left);
         rightLayout = (LinearLayout)findViewById(R.id.right);
@@ -68,9 +70,14 @@ public class MainActivity2 extends Activity implements SensorEventListener {
         rightLayout.setVisibility(LinearLayout.INVISIBLE);
         v = (Vibrator)this.getSystemService(Context.VIBRATOR_SERVICE);
         sensorManager=(SensorManager)getSystemService(SENSOR_SERVICE);
+        sensorManager2=(SensorManager)getSystemService(SENSOR_SERVICE);
         sensorManager.registerListener((SensorEventListener) this,
                 sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_NORMAL);
+        accelerometer = sensorManager2.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        magnetometer = sensorManager2.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+        sensorManager2.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager2.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_NORMAL);
         MediaPlayer song = MediaPlayer.create(MainActivity2.this, R.raw.bgsong);
         song.setLooping(true);
         song.start();
@@ -81,9 +88,23 @@ public class MainActivity2 extends Activity implements SensorEventListener {
     public void onSensorChanged(SensorEvent event){
         int type = event.sensor.getType();
         if(type==Sensor.TYPE_ACCELEROMETER){
+            mGravity = event.values;
             acc_x=event.values[0];
             acc_y=event.values[1];
             acc_z=event.values[2];
+        }
+        if(type==Sensor.TYPE_MAGNETIC_FIELD){
+            mGeomagnetic = event.values;
+        }
+        if (mGravity != null && mGeomagnetic != null) {
+            float R[] = new float[9];
+            float I[] = new float[9];
+            boolean success = SensorManager.getRotationMatrix(R, I, mGravity, mGeomagnetic);
+            if (success) {
+                float orientation[] = new float[3];
+                SensorManager.getOrientation(R, orientation);
+                orien_y = orientation[1]; // orientation contains: azimut, pitch and roll
+            }
         }
     }
 
@@ -120,6 +141,9 @@ public class MainActivity2 extends Activity implements SensorEventListener {
     }
 
     public void play(){
+        if(stage==4&&canTake==0){
+
+        }
         if(state==0&&!pause)
         {
             if( (Math.abs(acc_x)>shake_throw) || (Math.abs(acc_y)>shake_throw) || (Math.abs(acc_z)>shake_throw) ) {
@@ -133,14 +157,15 @@ public class MainActivity2 extends Activity implements SensorEventListener {
             fallPoke();
             int[] loca = new int[2];
             list.get(0).getLocationOnScreen(loca);
+            if(canTake==0){
+                state=0;
+                stage++;
+            }
             if(loca[1]==floor&&canTake>0){
-                Intent intent = new Intent(MainActivity.this,
-                        MainActivity2.class);
+                Intent intent = new Intent(MainActivity2.this,
+                        MainActivity3.class);
                 startActivity(intent);
             }
-        }
-        if(stage==4&&canTake==0){
-
         }
     }
 
@@ -156,7 +181,9 @@ public class MainActivity2 extends Activity implements SensorEventListener {
         list.get(0).startAnimation(ta);
         x[0] = rand_x2;
         y[0] = rand_y2;
-
+        MediaPlayer song = MediaPlayer.create(MainActivity2.this, R.raw.through);
+        song.setLooping(false);
+        song.start();
         switch(stage){
             case 1: canTake=1;
             case 2: canTake=2;

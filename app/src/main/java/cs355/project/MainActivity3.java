@@ -1,6 +1,7 @@
 package cs355.project;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -23,5 +24,8 @@ public class MainActivity3 extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        MediaPlayer song = MediaPlayer.create(MainActivity3.this, R.raw.lose);
+        song.setLooping(false);
+        song.start();
     }
 }
