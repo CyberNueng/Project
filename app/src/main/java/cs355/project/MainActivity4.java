@@ -15,7 +15,7 @@ public class MainActivity4 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main4);
-        ImageButton ib = (ImageButton)findViewById(R.id.dead);
+        ImageButton ib = (ImageButton)findViewById(R.id.dead2);
         ib.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity4.this,
