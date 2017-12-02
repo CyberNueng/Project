@@ -36,7 +36,7 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
     ArrayList<ImageView> list;
     TranslateAnimation ta, ta1, ta2;
     int state = 0; //0 for throw state, 1 for up state, 2foe fall state
-    int stage = 2; //number of pokemon troll
+    int stage = 1; //number of pokemon troll
     int floor = 1450;
     Vibrator v;
     int x[] = new int[5];
@@ -184,7 +184,9 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
         canthrow =false;
         ta2.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation) {}
+            public void onAnimationStart(Animation animation) {
+                loca = 0;
+            }
 
             @Override
             public void onAnimationEnd(Animation animation) {
