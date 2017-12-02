@@ -57,6 +57,7 @@ public class MainActivity2 extends Activity implements SensorEventListener {
     ImageButton pBtn;
     boolean fall = false;
     TextView text;
+    Random r;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,13 +124,13 @@ public class MainActivity2 extends Activity implements SensorEventListener {
 
     public void play(){
         text.setText("ต้องหยิบอีก: "+String.valueOf(canTake));
-        if(stage==4&&canTake==0){
-            Intent intent = new Intent(MainActivity2.this,
-                    MainActivity4.class);
-            startActivity(intent);
-        }
         if(state==0&&!pause)
         {
+            if(stage==5){
+                Intent intent = new Intent(MainActivity2.this,
+                        MainActivity4.class);
+                startActivity(intent);
+            }
             if( (Math.abs(acc_x)>shake_throw) || (Math.abs(acc_y)>shake_throw) || (Math.abs(acc_z)>shake_throw) ) {
                 v.vibrate(500);
                 throwPoke();
@@ -159,7 +160,7 @@ public class MainActivity2 extends Activity implements SensorEventListener {
             }
 
             if((acc_x<(5))&&(acc_y>(-5))&&L_R==2&&canTake>0&&list.size()>=2){
-                Random r = new Random();
+                r = new Random();
                 L_R = r.nextInt(2);
             }
 
@@ -185,7 +186,7 @@ public class MainActivity2 extends Activity implements SensorEventListener {
     }
 
     public void throwPoke(){
-        Random r = new Random();
+        r = new Random();
         int rand_x2 = r.nextInt(800);
         int rand_y2 = r.nextInt(200)-400;
         ta2 = new TranslateAnimation(x[0], rand_x2, floor, rand_y2);
@@ -226,7 +227,7 @@ public class MainActivity2 extends Activity implements SensorEventListener {
     }
 
     public void fallPoke(){
-        Random r = new Random();
+        r = new Random();
         int rand_x2 = r.nextInt(800);
         ta1 = new TranslateAnimation(x[0], rand_x2, y[0], floor);
         int speed = 1500;
@@ -260,7 +261,7 @@ public class MainActivity2 extends Activity implements SensorEventListener {
         Collections.shuffle(list);
         list.remove(0).setVisibility(View.GONE);
         for(int i = 0; i<5; i++) {
-            Random r = new Random();
+            r = new Random();
             x[i] = r.nextInt(800);
             y[i] = floor;
             int rand_y = r.nextInt(500);
