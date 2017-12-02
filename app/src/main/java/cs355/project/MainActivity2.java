@@ -37,21 +37,16 @@ public class MainActivity2 extends Activity implements SensorEventListener {
     Sensor accelerometer;
     Sensor magnetometer;
     Handler hdr = new Handler();
-    float acc_x, acc_y, acc_z, orien_y, loca;
-    float[] mGravity;
-    float[] mGeomagnetic;
+    float acc_x, acc_y, acc_z, loca;
     int POLL_INTERVAL = 250;
     int shake_throw = 15;
-    int shake_take = 10;
-    int pause_shake = 5;
     int canTake = 0;
     BroadcastReceiver batteryInfoReceiver;
-    ArrayList<ImageView> list = new ArrayList<ImageView>();
-    TranslateAnimation ta, ta1;
+    ArrayList<ImageView> list;
+    TranslateAnimation ta, ta1, ta2;
     int state = 0; //0 for throw state, 1 for up state, 2foe fall state
     int stage = 1; //number of pokemon troll
     int floor = 1450;
-    boolean candead = false;
     Vibrator v;
     int x[] = new int[5];
     int y[] = new int[5];
@@ -80,13 +75,6 @@ public class MainActivity2 extends Activity implements SensorEventListener {
         sensorManager.registerListener((SensorEventListener) this,
                 sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_NORMAL);
-        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-        sensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_NORMAL);
-        sensorManager.registerListener((SensorEventListener) this,
-                sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
-                SensorManager.SENSOR_DELAY_NORMAL);
         MediaPlayer song = MediaPlayer.create(MainActivity2.this, R.raw.bgsong);
         song.setLooping(true);
         song.start();
@@ -98,26 +86,9 @@ public class MainActivity2 extends Activity implements SensorEventListener {
     public void onSensorChanged(SensorEvent event){
         int type = event.sensor.getType();
         if(type==Sensor.TYPE_ACCELEROMETER){
-            mGravity = event.values;
             acc_x=event.values[0];
             acc_y=event.values[1];
             acc_z=event.values[2];
-        }
-        if(type==Sensor.TYPE_MAGNETIC_FIELD){
-            mGeomagnetic = event.values;
-        }
-        /*if (mGravity != null && mGeomagnetic != null) {
-            float R[] = new float[9];
-            float I[] = new float[9];
-            boolean success = SensorManager.getRotationMatrix(R, I, mGravity, mGeomagnetic);
-            if (success) {
-                float orientation[] = new float[3];
-                SensorManager.getOrientation(R, orientation);
-                orien_y = orientation[2]; // orientation contains: azimut, pitch and roll
-            }
-        }*/
-        if(type==Sensor.TYPE_ORIENTATION){
-            orien_y=event.values[1];
         }
     }
 
@@ -136,13 +107,8 @@ public class MainActivity2 extends Activity implements SensorEventListener {
     @Override
     protected void onResume() {
         super.onResume();
-        sensorManager.registerListener(this, sensorManager.getDefaultSensor(
-                Sensor.TYPE_ACCELEROMETER),
-                SensorManager.SENSOR_DELAY_NORMAL);
-        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-        sensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_NORMAL);
-        sensorManager.registerListener((SensorEventListener) this,
-                sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
+        sensorManager.registerListener(this,
+                sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_NORMAL);
         this.registerReceiver(this.batteryInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         hdr.postDelayed(pollTask, POLL_INTERVAL);
@@ -156,7 +122,7 @@ public class MainActivity2 extends Activity implements SensorEventListener {
     }
 
     public void play(){
-        text.setText(String.valueOf(orien_y));
+        text.setText("ต้องหยิบอีก: "+String.valueOf(canTake));
         if(stage==4&&canTake==0){
             Intent intent = new Intent(MainActivity2.this,
                     MainActivity4.class);
@@ -172,35 +138,34 @@ public class MainActivity2 extends Activity implements SensorEventListener {
         }
         else if(state==1&&!pause)
         {
-            if((orien_y<(-20))&&L_R==0){
+            if((acc_x>(5))&&L_R==0){
                 leftLayout.setVisibility(LinearLayout.INVISIBLE);
                 MediaPlayer song = MediaPlayer.create(MainActivity2.this, R.raw.sucess);
-                list.remove(1).setVisibility(View.GONE);
                 song.setLooping(false);
                 song.start();
+                list.get(1).clearAnimation();
+                list.remove(1).setVisibility(View.GONE);
                 canTake--;
                 L_R=2;
-            } else if((orien_y>(20))&&L_R==1){
+            } else if((acc_x<(-5))&&L_R==1){
                 rightLayout.setVisibility(LinearLayout.INVISIBLE);
                 MediaPlayer song = MediaPlayer.create(MainActivity2.this, R.raw.sucess);
-                list.remove(1).setVisibility(View.GONE);
                 song.setLooping(false);
                 song.start();
+                list.get(1).clearAnimation();
+                list.remove(1).setVisibility(View.GONE);
                 canTake--;
                 L_R=2;
             }
 
-            if((orien_y>(-20))&&(orien_y<(20))&&L_R==2&&canTake>0&&list.size()>=2){
+            if((acc_x<(5))&&(acc_y>(-5))&&L_R==2&&canTake>0&&list.size()>=2){
                 Random r = new Random();
-                L_R = r.nextInt(1);
+                L_R = r.nextInt(2);
             }
 
-            if(L_R==0) leftLayout.setVisibility(LinearLayout.VISIBLE);
-            else if(L_R==1) rightLayout.setVisibility(LinearLayout.VISIBLE);
-
-            if(fall) {
-                fallPoke();
-                fall =false;
+            if(canTake>0) {
+                if (L_R == 0) leftLayout.setVisibility(LinearLayout.VISIBLE);
+                else if (L_R == 1) rightLayout.setVisibility(LinearLayout.VISIBLE);
             }
 
             if(canTake==0&&list.size()==1){
@@ -223,23 +188,38 @@ public class MainActivity2 extends Activity implements SensorEventListener {
         Random r = new Random();
         int rand_x2 = r.nextInt(800);
         int rand_y2 = r.nextInt(200)-400;
-        ta = new TranslateAnimation(x[0], rand_x2, floor, rand_y2);
-        int speed = r.nextInt(1500);
-        L_R = r.nextInt(1);
-        ta.setDuration(speed);
-        ta.setFillAfter(true);
+        ta2 = new TranslateAnimation(x[0], rand_x2, floor, rand_y2);
+        int speed = 1500;
+        L_R = r.nextInt(2);
+        ta2.setDuration(speed);
+        ta2.setFillAfter(true);
+        fall = true;
+        ta2.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {}
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                if(fall) {
+                    fall =false;
+                    fallPoke();
+                }
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+        });
         MediaPlayer song = MediaPlayer.create(MainActivity2.this, R.raw.through);
         song.setLooping(false);
         song.start();
-        list.get(0).startAnimation(ta);
+        list.get(0).startAnimation(ta2);
         x[0] = rand_x2;
         y[0] = rand_y2;
-        fall = true;
         switch(stage){
-            case 1: canTake=1;
-            case 2: canTake=Math.min(2,list.size()-1);
-            case 3: canTake=Math.min(3,list.size()-1);
-            case 4: canTake=Math.min(4,list.size()-1);
+            case 1: canTake=1; break;
+            case 2: canTake=Math.min(2,list.size()-1); break;
+            case 3: canTake=Math.min(3,list.size()-1); break;
+            case 4: canTake=Math.min(4,list.size()-1); break;
         }
         if(L_R==0) leftLayout.setVisibility(LinearLayout.VISIBLE);
         else if(L_R==1) rightLayout.setVisibility(LinearLayout.VISIBLE);
@@ -249,24 +229,20 @@ public class MainActivity2 extends Activity implements SensorEventListener {
         Random r = new Random();
         int rand_x2 = r.nextInt(800);
         ta1 = new TranslateAnimation(x[0], rand_x2, y[0], floor);
-        int rand_speed = r.nextInt(1500);
-        ta1.setDuration(rand_speed);
+        int speed = 1500;
+        ta1.setDuration(speed);
         ta1.setFillAfter(true);
         ta1.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
+            public void onAnimationStart(Animation animation) {}
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                loca = 0;
+                loca = 1450;
             }
 
             @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
+            public void onAnimationRepeat(Animation animation) {}
         });
         list.get(0).startAnimation(ta1);
         x[0] = rand_x2;
@@ -274,6 +250,7 @@ public class MainActivity2 extends Activity implements SensorEventListener {
     }
 
     public void setPoke(){
+        list = new ArrayList<ImageView>();
         list.add((ImageView)findViewById(R.id.img1));
         list.add((ImageView)findViewById(R.id.img2));
         list.add((ImageView)findViewById(R.id.img3));
