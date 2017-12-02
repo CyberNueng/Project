@@ -5,7 +5,7 @@
     android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg"
+    android:background="@drawable/background"
     tools:context="cs355.project.MainActivity2">
 
     <LinearLayout
@@ -27,6 +27,15 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="TextView"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+
                 <ImageButton
                     android:id="@+id/puaseBtn"
                     android:layout_width="wrap_content"
@@ -34,6 +43,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/pause" />
             </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout
