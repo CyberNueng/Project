@@ -3,7 +3,7 @@
     package="cs355.project">
 
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -23,8 +23,9 @@
         </activity>
         <activity
             android:name=".MainActivity2"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".MainActivity3"></activity>
+            android:screenOrientation="portrait" />
+        <activity android:name=".MainActivity3" />
+        <activity android:name=".MainActivity4"></activity>
     </application>
 
 </manifest>
