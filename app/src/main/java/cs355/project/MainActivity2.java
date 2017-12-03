@@ -268,7 +268,7 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
         list.add((ImageView)findViewById(R.id.img5));
         list.add((ImageView)findViewById(R.id.img6));
         Collections.shuffle(list);
-        list.remove(0).setVisibility(View.GONE);
+        list.remove(0).setVisibility(View.INVISIBLE);
         for(int i = 0; i<5; i++) {
             r = new Random();
             x[i] = r.nextInt(wall-100);
@@ -279,6 +279,7 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
             int rand_drop = r.nextInt(400)+800;
             ta.setDuration(rand_drop);
             ta.setFillAfter(true);
+            list.get(i).setVisibility(View.VISIBLE);
             list.get(i).setAnimation(ta);
             ta.start();
         }
