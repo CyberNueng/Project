@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Point;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -13,6 +14,7 @@ import android.os.Handler;
 import android.os.Vibrator;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.TranslateAnimation;
@@ -29,7 +31,7 @@ import java.util.Random;
 public class MainActivity2 extends AppCompatActivity implements SensorEventListener {
     SensorManager sensorManager;
     Handler hdr = new Handler();
-    float acc_x, acc_y, acc_z, loca;
+    float acc_x, acc_y, acc_z;
     int POLL_INTERVAL = 200;
     int shake_throw = 15;
     int canTake = 0;
@@ -38,8 +40,7 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
     TranslateAnimation ta, ta1, ta2;
     int state = 0; //0 for throw state, 1 for up state, 2foe fall state
     int stage = 1; //number of pokemon troll
-    int floor = 800;
-    int wall = 400;
+    int floor,wall;
     Vibrator v;
     int x[] = new int[5];
     int y[] = new int[5];
@@ -51,12 +52,18 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
     boolean canthrow = true;
     Random r = new Random();
     MediaPlayer songThrow, song, songtake;
+    TextView textStage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main2);
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        wall = size.x-100;
+        floor = (int) (size.y*0.755);
         pauseLayout = (LinearLayout)findViewById(R.id.pause);
         leftLayout = (LinearLayout)findViewById(R.id.left);
         rightLayout = (LinearLayout)findViewById(R.id.right);
@@ -76,7 +83,7 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
         song.start();
         createBtn();
         setPoke();
-        //TextView text = (TextView)findViewById(R.id.textView);
+        textStage = (TextView)findViewById(R.id.textView);
     }
 
     public void onSensorChanged(SensorEvent event){
@@ -117,9 +124,18 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
         hdr.removeCallbacks(pollTask);
     }
 
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        Intent intent = new Intent(MainActivity2.this,
+                MainActivity.class);
+        startActivity(intent);
+    }
+
     public void play(){
         if(state==0&&!pause)
         {
+            textStage.setText("Stage: " + stage);
             if(stage==5){
                 Intent intent = new Intent(MainActivity2.this,
                         MainActivity4.class);
@@ -164,9 +180,9 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
                     else if (L_R == 1) rightLayout.setVisibility(LinearLayout.VISIBLE);
                 }
             }
-            if(loca==floor&&canTake==0){
+            if(y[0]==floor&&canTake==0){
                 state=0;
-            }else if(loca==floor&&canTake>0){
+            }else if(y[0]==floor&&canTake>0){
                 Intent intent = new Intent(MainActivity2.this,
                         MainActivity3.class);
                 startActivity(intent);
@@ -176,8 +192,8 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
     }
 
     public void throwPoke(){
-        int rand_x2 = r.nextInt(400);
-        int rand_y2 = r.nextInt(100);
+        int rand_x2 = r.nextInt(wall);
+        int rand_y2 = r.nextInt(floor/5);
         ta2 = new TranslateAnimation(x[0], rand_x2, floor, rand_y2);
         int speed = 1500;
         L_R = r.nextInt(2);
@@ -188,7 +204,7 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
         ta2.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                loca = 0;
+                y[0] = 0;
             }
 
             @Override
@@ -228,16 +244,15 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                loca = floor;
+                y[0] = floor;
                 canthrow = true;
             }
 
             @Override
             public void onAnimationRepeat(Animation animation) {}
         });
-        list.get(0).startAnimation(ta1);
         x[0] = rand_x2;
-        y[0] = floor;
+        list.get(0).startAnimation(ta1);
     }
 
     public void setPoke(){
@@ -252,9 +267,9 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
         list.remove(0).setVisibility(View.GONE);
         for(int i = 0; i<5; i++) {
             r = new Random();
-            x[i] = r.nextInt(800);
+            x[i] = r.nextInt(wall);
             y[i] = floor;
-            int rand_y = r.nextInt(500);
+            int rand_y = r.nextInt(floor/4);
             int rand_x2 = r.nextInt(wall);
             ta = new TranslateAnimation(x[i], rand_x2, rand_y, floor);
             int rand_drop = r.nextInt(400)+800;
