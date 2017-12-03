@@ -148,13 +148,15 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
             }
             if( (Math.abs(acc_x)>shake_throw) || (Math.abs(acc_y)>shake_throw) || (Math.abs(acc_z)>shake_throw) && canthrow) {
                 v.vibrate(500);
+                songtake = MediaPlayer.create(MainActivity2.this, R.raw.sucess);
+                songtake.setLooping(false);
                 throwPoke();
                 state=1;
             }
         }
         else if(state==1&&!pause)
         {
-            if(canTake==0&&list.size()==1){
+            if(canTake==0&&list.size()==1&&y[0]==floor){
                 state=0;
                 stage++;
                 setPoke();
@@ -162,8 +164,6 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
 
             if((acc_x>(4))&&L_R==0){
                 leftLayout.setVisibility(LinearLayout.INVISIBLE);
-                songtake = MediaPlayer.create(MainActivity2.this, R.raw.sucess);
-                songtake.setLooping(false);
                 songtake.start();
                 list.get(1).clearAnimation();
                 list.remove(1).setVisibility(View.GONE);
@@ -180,11 +180,9 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
 
             if((acc_x<(5))&&(acc_x>(-5))&&L_R==2&&canTake>0&&list.size()>=2){
                 L_R = r.nextInt(2);
-                if(canTake>0) {
-                    songtake.stop();
-                    if (L_R == 0) leftLayout.setVisibility(LinearLayout.VISIBLE);
-                    else if (L_R == 1) rightLayout.setVisibility(LinearLayout.VISIBLE);
-                }
+                songtake.stop();
+                if (L_R == 0) leftLayout.setVisibility(LinearLayout.VISIBLE);
+                else if (L_R == 1) rightLayout.setVisibility(LinearLayout.VISIBLE);
             }
             if(y[0]==floor&&canTake==0){
                 state=0;
@@ -199,7 +197,7 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
     }
 
     public void throwPoke(){
-        int rand_x2 = r.nextInt(wall);
+        int rand_x2 = r.nextInt(wall-100);
         int rand_y2 = r.nextInt(floor/5);
         ta2 = new TranslateAnimation(x[0], rand_x2, floor, rand_y2);
         int speed = 1500;
@@ -238,7 +236,7 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
     }
 
     public void fallPoke(){
-        int rand_x2 = r.nextInt(wall);
+        int rand_x2 = r.nextInt(wall-100);
         ta1 = new TranslateAnimation(x[0], rand_x2, y[0], floor);
         int speed = 1500;
         ta1.setDuration(speed);
