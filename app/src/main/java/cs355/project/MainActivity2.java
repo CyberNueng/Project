@@ -298,8 +298,8 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
     }
 
     public void restart(){
-        finish();
         startActivity(getIntent());
+        finish();
     }
 
     public void createBtn(){
