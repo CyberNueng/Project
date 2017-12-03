@@ -80,6 +80,8 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
         songThrow = MediaPlayer.create(MainActivity2.this, R.raw.through);
         song.setLooping(true);
         songThrow.setLooping(false);
+        songtake = MediaPlayer.create(MainActivity2.this, R.raw.sucess);
+        songtake.setLooping(false);
         song.start();
         createBtn();
         setPoke();
@@ -148,8 +150,6 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
             }
             if( (Math.abs(acc_x)>shake_throw) || (Math.abs(acc_y)>shake_throw) || (Math.abs(acc_z)>shake_throw) && canthrow) {
                 v.vibrate(500);
-                songtake = MediaPlayer.create(MainActivity2.this, R.raw.sucess);
-                songtake.setLooping(false);
                 throwPoke();
                 state=1;
             }
@@ -164,23 +164,24 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
 
             if((acc_x>(4))&&L_R==0){
                 leftLayout.setVisibility(LinearLayout.INVISIBLE);
-                songtake.start();
                 list.get(1).clearAnimation();
+                songtake.start();
                 list.remove(1).setVisibility(View.GONE);
                 canTake--;
                 L_R=2;
             } else if((acc_x<(-4))&&L_R==1){
                 rightLayout.setVisibility(LinearLayout.INVISIBLE);
-                songtake.start();
                 list.get(1).clearAnimation();
+                songtake.start();
                 list.remove(1).setVisibility(View.GONE);
                 canTake--;
                 L_R=2;
             }
 
-            if((acc_x<(5))&&(acc_x>(-5))&&L_R==2&&canTake>0&&list.size()>=2){
+            if((acc_x<(4))&&(acc_x>(-4))&&L_R==2&&canTake>0&&list.size()>=2){
                 L_R = r.nextInt(2);
-                songtake.stop();
+                songtake.pause();
+                songtake.seekTo(0);
                 if (L_R == 0) leftLayout.setVisibility(LinearLayout.VISIBLE);
                 else if (L_R == 1) rightLayout.setVisibility(LinearLayout.VISIBLE);
             }

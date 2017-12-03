@@ -14,7 +14,6 @@ public class MainActivity5 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main5);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_main);
         song = MediaPlayer.create(MainActivity5.this, R.raw.bgsong);
         song.setLooping(true);
         song.start();
