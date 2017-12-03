@@ -181,6 +181,7 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
             if((acc_x<(5))&&(acc_x>(-5))&&L_R==2&&canTake>0&&list.size()>=2){
                 L_R = r.nextInt(2);
                 if(canTake>0) {
+                    songtake.stop();
                     if (L_R == 0) leftLayout.setVisibility(LinearLayout.VISIBLE);
                     else if (L_R == 1) rightLayout.setVisibility(LinearLayout.VISIBLE);
                 }
