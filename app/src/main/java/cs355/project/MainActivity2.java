@@ -274,7 +274,7 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
             x[i] = r.nextInt(wall-100);
             y[i] = floor;
             int rand_y = r.nextInt(floor/4);
-            int rand_x2 = r.nextInt(wall);
+            int rand_x2 = r.nextInt(wall-100);
             ta = new TranslateAnimation(x[i], rand_x2, rand_y, floor);
             int rand_drop = r.nextInt(400)+800;
             ta.setDuration(rand_drop);
