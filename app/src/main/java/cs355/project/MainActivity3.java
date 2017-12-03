@@ -37,5 +37,10 @@ public class MainActivity3 extends AppCompatActivity {
     @Override
     public void onBackPressed(){
         super.onBackPressed();
+        song.stop();
+        Intent intent = new Intent(MainActivity3.this,
+                MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

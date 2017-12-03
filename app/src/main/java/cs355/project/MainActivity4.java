@@ -32,4 +32,14 @@ public class MainActivity4 extends AppCompatActivity {
         song.setLooping(false);
         song.start();
     }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        song.stop();
+        Intent intent = new Intent(MainActivity4.this,
+                MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }
