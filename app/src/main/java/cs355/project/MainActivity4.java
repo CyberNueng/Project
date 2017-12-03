@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 public class MainActivity4 extends AppCompatActivity {
+    MediaPlayer song;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,15 +19,16 @@ public class MainActivity4 extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main4);
         ImageButton ib = (ImageButton)findViewById(R.id.dead2);
+        song = MediaPlayer.create(MainActivity4.this, R.raw.win);
         ib.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                song.stop();
                 Intent intent = new Intent(MainActivity4.this,
                         MainActivity2.class);
-
                 startActivity(intent);
+                finish();
             }
         });
-        MediaPlayer song = MediaPlayer.create(MainActivity4.this, R.raw.win);
         song.setLooping(false);
         song.start();
     }

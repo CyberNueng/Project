@@ -130,6 +130,9 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
     public void onBackPressed(){
         super.onBackPressed();
         song.stop();
+        Intent intent = new Intent(MainActivity2.this,
+                MainActivity.class);
+        startActivity(intent);
         finish();
     }
 
