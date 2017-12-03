@@ -110,6 +110,7 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
     @Override
     protected void onResume() {
         super.onResume();
+        song.start();
         sensorManager.registerListener(this,
                 sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_NORMAL);
@@ -120,6 +121,7 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
     @Override
     protected void onPause() {
         super.onPause();
+        song.stop();
         sensorManager.unregisterListener(this);
         hdr.removeCallbacks(pollTask);
     }
@@ -127,9 +129,8 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
     @Override
     public void onBackPressed(){
         super.onBackPressed();
-        Intent intent = new Intent(MainActivity2.this,
-                MainActivity.class);
-        startActivity(intent);
+        song.stop();
+        finish();
     }
 
     public void play(){
@@ -140,6 +141,7 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
                 Intent intent = new Intent(MainActivity2.this,
                         MainActivity4.class);
                 startActivity(intent);
+                finish();
             }
             if( (Math.abs(acc_x)>shake_throw) || (Math.abs(acc_y)>shake_throw) || (Math.abs(acc_z)>shake_throw) && canthrow) {
                 v.vibrate(500);
@@ -186,6 +188,7 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
                 Intent intent = new Intent(MainActivity2.this,
                         MainActivity3.class);
                 startActivity(intent);
+                finish();
             }
 
         }
@@ -203,9 +206,7 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
         canthrow =false;
         ta2.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation) {
-                y[0] = 0;
-            }
+            public void onAnimationStart(Animation animation) {}
 
             @Override
             public void onAnimationEnd(Animation animation) {
@@ -267,7 +268,7 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
         list.remove(0).setVisibility(View.GONE);
         for(int i = 0; i<5; i++) {
             r = new Random();
-            x[i] = r.nextInt(wall);
+            x[i] = r.nextInt(wall-100);
             y[i] = floor;
             int rand_y = r.nextInt(floor/4);
             int rand_x2 = r.nextInt(wall);

@@ -2,18 +2,14 @@ package cs355.project;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
-import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 
 public class MainActivity extends AppCompatActivity {
+    MediaPlayer song;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,16 +19,16 @@ public class MainActivity extends AppCompatActivity {
         //LinearLayout layout =(LinearLayout)findViewById(R.id.background);
         //layout.setBackgroundResource(R.drawable.background);
 
-        MediaPlayer song = MediaPlayer.create(MainActivity.this, R.raw.bgsong);
+        song = MediaPlayer.create(MainActivity.this, R.raw.bgsong);
         song.setLooping(true);
         song.start();
 
         Button Button = (Button) findViewById(R.id.button);
         Button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                song.stop();
                 Intent intent = new Intent(MainActivity.this,
                         MainActivity2.class);
-
                 startActivity(intent);
             }
         });
@@ -40,8 +36,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        song.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        song.stop();
+    }
+
+    @Override
     public void onBackPressed(){
-        super.onBackPressed();
+        song.stop();
         finish();
     }
 }
