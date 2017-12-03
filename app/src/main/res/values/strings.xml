@@ -6,4 +6,11 @@
     <string name="img4">pikachu</string>
     <string name="img5">pink</string>
     <string name="img6">som</string>
+    <string name="credit">Credit</string>
+    <string name="applink1">
+        <a href="https://elements.envato.com/cutest-animals-clipart-F4JRW4">https://elements.envato.com/cutest-animals-clipart-F4JRW4</a>
+    </string>
+    <string name="applink2">
+        <a href="https://www.vecteezy.com/free-vector/background">https://elements.envato.com/cutest-animals-clipart-F4JRW4</a>
+    </string>
 </resources>
