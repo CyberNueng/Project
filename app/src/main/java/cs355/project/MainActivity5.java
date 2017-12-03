@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 public class MainActivity5 extends AppCompatActivity {
     MediaPlayer song;
@@ -17,6 +19,10 @@ public class MainActivity5 extends AppCompatActivity {
         song = MediaPlayer.create(MainActivity5.this, R.raw.bgsong);
         song.setLooping(true);
         song.start();
+        TextView t1 = (TextView) findViewById(R.id.textView2);
+        t1.setMovementMethod(LinkMovementMethod.getInstance());
+        TextView t2 = (TextView) findViewById(R.id.textView3);
+        t2.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     @Override
