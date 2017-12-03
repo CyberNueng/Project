@@ -30,4 +30,9 @@ public class MainActivity3 extends AppCompatActivity {
         song.setLooping(false);
         song.start();
     }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+    }
 }

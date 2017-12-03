@@ -20,6 +20,7 @@ import android.view.animation.Animation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,7 +30,7 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
     SensorManager sensorManager;
     Handler hdr = new Handler();
     float acc_x, acc_y, acc_z, loca;
-    int POLL_INTERVAL = 250;
+    int POLL_INTERVAL = 200;
     int shake_throw = 15;
     int canTake = 0;
     BroadcastReceiver batteryInfoReceiver;
@@ -37,7 +38,8 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
     TranslateAnimation ta, ta1, ta2;
     int state = 0; //0 for throw state, 1 for up state, 2foe fall state
     int stage = 1; //number of pokemon troll
-    int floor = 1450;
+    int floor = 800;
+    int wall = 400;
     Vibrator v;
     int x[] = new int[5];
     int y[] = new int[5];
@@ -74,6 +76,7 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
         song.start();
         createBtn();
         setPoke();
+        //TextView text = (TextView)findViewById(R.id.textView);
     }
 
     public void onSensorChanged(SensorEvent event){
@@ -136,7 +139,7 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
                 setPoke();
             }
 
-            if((acc_x>(5))&&L_R==0){
+            if((acc_x>(4))&&L_R==0){
                 leftLayout.setVisibility(LinearLayout.INVISIBLE);
                 songtake = MediaPlayer.create(MainActivity2.this, R.raw.sucess);
                 songtake.setLooping(false);
@@ -145,7 +148,7 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
                 list.remove(1).setVisibility(View.GONE);
                 canTake--;
                 L_R=2;
-            } else if((acc_x<(-5))&&L_R==1){
+            } else if((acc_x<(-4))&&L_R==1){
                 rightLayout.setVisibility(LinearLayout.INVISIBLE);
                 songtake.start();
                 list.get(1).clearAnimation();
@@ -173,8 +176,8 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
     }
 
     public void throwPoke(){
-        int rand_x2 = r.nextInt(800);
-        int rand_y2 = r.nextInt(200)-400;
+        int rand_x2 = r.nextInt(400);
+        int rand_y2 = r.nextInt(100);
         ta2 = new TranslateAnimation(x[0], rand_x2, floor, rand_y2);
         int speed = 1500;
         L_R = r.nextInt(2);
@@ -214,7 +217,7 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
     }
 
     public void fallPoke(){
-        int rand_x2 = r.nextInt(800);
+        int rand_x2 = r.nextInt(wall);
         ta1 = new TranslateAnimation(x[0], rand_x2, y[0], floor);
         int speed = 1500;
         ta1.setDuration(speed);
@@ -225,7 +228,7 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                loca = 1450;
+                loca = floor;
                 canthrow = true;
             }
 
@@ -252,7 +255,7 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
             x[i] = r.nextInt(800);
             y[i] = floor;
             int rand_y = r.nextInt(500);
-            int rand_x2 = r.nextInt(800);
+            int rand_x2 = r.nextInt(wall);
             ta = new TranslateAnimation(x[i], rand_x2, rand_y, floor);
             int rand_drop = r.nextInt(400)+800;
             ta.setDuration(rand_drop);
