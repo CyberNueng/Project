@@ -43,4 +43,17 @@ public class MainActivity3 extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        song.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        song.stop();
+    }
+
 }
